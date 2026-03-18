@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Amazon Sales Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6f9; color: #2d2d2d; }
+
+  .header {
+    background: linear-gradient(135deg, #0F1117 0%, #1a1d2e 100%);
+    color: white; padding: 60px 40px; text-align: center;
+  }
+  .header h1 { font-size: 2.4em; margin-bottom: 10px; color: #00D4FF; }
+  .header p { font-size: 1.1em; color: #aaa; max-width: 700px; margin: 0 auto; }
+  .badge {
+    display: inline-block; background: #1e2235; color: #00D4FF;
+    padding: 6px 16px; border-radius: 20px; font-size: 0.85em;
+    margin: 6px; border: 1px solid #00D4FF33;
+  }
+  .badges { margin-top: 20px; }
+
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+  .section { background: white; border-radius: 12px; padding: 32px; margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .section h2 { font-size: 1.4em; color: #0F1117; margin-bottom: 18px;
+    padding-bottom: 10px; border-bottom: 3px solid #00D4FF; }
+  .section h3 { font-size: 1.1em; color: #333; margin: 18px 0 10px; }
+  .section p { line-height: 1.8; color: #444; margin-bottom: 12px; }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 20px 0; }
+  .kpi-card {
+    background: #0F1117; border-radius: 10px; padding: 20px; text-align: center;
+    border: 1px solid #1e2235;
+  }
+  .kpi-value { font-size: 1.6em; font-weight: bold; }
+  .kpi-label { font-size: 0.8em; color: #888; margin-top: 6px; }
+  .cyan { color: #00D4FF; }
+  .yellow { color: #FFD93D; }
+  .green { color: #6BCB77; }
+  .red { color: #FF6B6B; }
+
+  .insight-card {
+    background: #f8f9ff; border-left: 4px solid #00D4FF;
+    padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 14px;
+  }
+  .insight-card h4 { color: #0F1117; margin-bottom: 6px; font-size: 1em; }
+  .insight-card p { color: #555; font-size: 0.95em; margin: 0; }
+  .insight-card.red-border { border-left-color: #FF6B6B; }
+  .insight-card.yellow-border { border-left-color: #FFD93D; }
+  .insight-card.green-border { border-left-color: #6BCB77; }
+
+  .steps { counter-reset: step; }
+  .step {
+    display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start;
+  }
+  .step-num {
+    background: #00D4FF; color: #0F1117; width: 32px; height: 32px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 0.9em; flex-shrink: 0; margin-top: 2px;
+  }
+  .step-content h4 { color: #0F1117; margin-bottom: 4px; }
+  .step-content p { color: #555; font-size: 0.95em; margin: 0; }
+
+  .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .tool-chip {
+    background: #f0f4ff; border: 1px solid #dde4ff;
+    padding: 12px 16px; border-radius: 8px; text-align: center;
+    font-size: 0.9em; color: #333; font-weight: 500;
+  }
+
+  .resume-box {
+    background: #0F1117; border-radius: 10px; padding: 24px;
+    border: 1px solid #1e2235;
+  }
+  .resume-box ul { list-style: none; }
+  .resume-box li {
+    color: #c0c0c0; padding: 8px 0; border-bottom: 1px solid #1e2235;
+    font-size: 0.95em; line-height: 1.6;
+  }
+  .resume-box li::before { content: "▸ "; color: #00D4FF; }
+  .resume-box li:last-child { border-bottom: none; }
+
+  .footer {
+    background: #0F1117; color: #666; text-align: center;
+    padding: 30px; font-size: 0.9em;
+  }
+  .footer span { color: #00D4FF; }
+
+  @media (max-width: 600px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>Amazon Sales Dashboard</h1>
+  <p>End-to-end data analytics project analyzing 1,21,180 Amazon orders worth ₹7.8 Crore</p>
+  <div class="badges">
+    <span class="badge">Python</span>
+    <span class="badge">Pandas</span>
+    <span class="badge">Matplotlib</span>
+    <span class="badge">Power BI</span>
+    <span class="badge">Data Cleaning</span>
+    <span class="badge">KPI Analysis</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Overview -->
+  <div class="section">
+    <h2>📋 Project Overview</h2>
+    <p>This project analyzes real Amazon India sales data from April to June 2022. The goal was to build a complete analytics pipeline — from raw messy data all the way to an interactive Power BI dashboard — that provides actionable business insights for decision makers.</p>
+    <p>The dataset contained <strong>1,28,975 raw records</strong> which were cleaned down to <strong>1,21,180 valid orders</strong> after removing cancelled transactions with no revenue and fixing data quality issues.</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section">
+    <h2>📊 Key Metrics</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-value cyan">₹7.86Cr</div>
+        <div class="kpi-label">Total Revenue</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value yellow">1,13,030</div>
+        <div class="kpi-label">Total Orders</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value green">₹695</div>
+        <div class="kpi-label">Avg Order Value</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value red">8.88%</div>
+        <div class="kpi-label">Cancellation Rate</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Problem Statement -->
+  <div class="section">
+    <h2>❓ Problem Statement</h2>
+    <p>The business needed answers to these questions:</p>
+    <div class="insight-card">
+      <h4>Is revenue growing or declining month over month?</h4>
+      <p>The raw data had no trend analysis — just individual order records.</p>
+    </div>
+    <div class="insight-card yellow-border">
+      <h4>Which states and cities are driving the most revenue?</h4>
+      <p>No geographic breakdown existed in the original data.</p>
+    </div>
+    <div class="insight-card red-border">
+      <h4>How big is the cancellation problem?</h4>
+      <p>Cancelled orders were mixed with valid orders — no clean separation.</p>
+    </div>
+    <div class="insight-card green-border">
+      <h4>Which product categories are most profitable?</h4>
+      <p>Category performance was buried in 1,28,975 rows of raw data.</p>
+    </div>
+  </div>
+
+  <!-- Approach -->
+  <div class="section">
+    <h2>🔧 My Approach</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Data Collection</h4>
+          <p>Downloaded Amazon Sales Report dataset with 1,28,975 rows and 24 columns covering orders from March to June 2022.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Data Cleaning (Python + Pandas)</h4>
+          <p>Removed 6 irrelevant columns, fixed date formats, handled 7,795 missing revenue values, fixed mixed data types, and achieved zero missing values in key columns.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>KPI Analysis</h4>
+          <p>Calculated 6 core KPIs: Total Revenue, Monthly Trends, State Performance, Category Revenue, Order Status Breakdown, and B2B vs B2C split.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Visualization (Matplotlib)</h4>
+          <p>Generated 6 professional dark-themed charts including line charts, bar charts, and donut charts saved as high-resolution PNG files.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Interactive Dashboard (Power BI)</h4>
+          <p>Built a fully interactive Power BI dashboard with 4 KPI cards and 5 charts allowing drill-down analysis by state, category, and time period.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="section">
+    <h2>💡 Key Business Insights</h2>
+    <div class="insight-card red-border">
+      <h4>📉 Revenue is declining 19% month over month</h4>
+      <p>April: ₹2.88 Cr → May: ₹2.62 Cr → June: ₹2.34 Cr. This signals a serious business concern that needs immediate attention from the sales and marketing team.</p>
+    </div>
+    <div class="insight-card">
+      <h4>🗺️ 39% of revenue comes from just 3 states</h4>
+      <p>Maharashtra (₹1.33 Cr), Karnataka (₹1.05 Cr), and Telangana (₹0.69 Cr) dominate. This geographic concentration is a major risk if these markets slow down.</p>
+    </div>
+    <div class="insight-card yellow-border">
+      <h4>🛍️ Two categories drive 77% of revenue</h4>
+      <p>"Set" (₹3.92 Cr) and "Kurta" (₹2.13 Cr) together account for 77% of all revenue. The business is heavily dependent on these two product lines.</p>
+    </div>
+    <div class="insight-card red-border">
+      <h4>⚠️ ₹82L+ lost to cancellations and returns</h4>
+      <p>8.88% cancellation rate + 1.61% return rate = 10.49% of all orders never complete. This represents a significant revenue leakage that needs operational fixes.</p>
+    </div>
+    <div class="insight-card green-border">
+      <h4>🏢 B2B is a massive untapped opportunity</h4>
+      <p>B2B orders are only 0.75% of revenue (₹5.91L). With the right wholesale strategy, this segment could be scaled 10x without acquiring new retail customers.</p>
+    </div>
+  </div>
+
+  <!-- Tools -->
+  <div class="section">
+    <h2>🛠️ Tools and Technologies</h2>
+    <div class="tools-grid">
+      <div class="tool-chip">🐍 Python 3.x</div>
+      <div class="tool-chip">🐼 Pandas</div>
+      <div class="tool-chip">📊 Matplotlib</div>
+      <div class="tool-chip">🎨 Seaborn</div>
+      <div class="tool-chip">📗 OpenPyXL</div>
+      <div class="tool-chip">📈 Power BI</div>
+    </div>
+  </div>
+
+  <!-- Resume Bullets -->
+  <div class="section">
+    <h2>📄 Resume Bullet Points</h2>
+    <div class="resume-box">
+      <ul>
+        <li>Built end-to-end Amazon Sales Analytics dashboard analyzing <strong style="color:#00D4FF">1,21,180 orders worth ₹7.8 Crore</strong> using Python and Power BI</li>
+        <li>Cleaned and processed raw dataset of 1,28,975 records — removed duplicates, fixed data types, handled missing values achieving <strong style="color:#6BCB77">zero data quality issues</strong></li>
+        <li>Identified <strong style="color:#FF6B6B">19% month-over-month revenue decline</strong> from April to June 2022 using Python trend analysis</li>
+        <li>Discovered <strong style="color:#FF6B6B">8.88% cancellation rate</strong> representing ₹82L+ in potential lost revenue — flagged as critical business risk</li>
+        <li>Revealed geographic concentration risk — <strong style="color:#FFD93D">top 3 states drive 39%</strong> of all revenue</li>
+        <li>Built interactive Power BI dashboard with <strong style="color:#00D4FF">5 visualizations and 4 KPI cards</strong> for business stakeholders</li>
+        <li>Automated full data pipeline: raw CSV → data cleaning → KPI analysis → charts → Power BI using Python scripts</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>Amazon Sales Dashboard — Data Analytics Portfolio Project</p>
+  <p style="margin-top:8px">Built with <span>Python</span> · <span>Pandas</span> · <span>Matplotlib</span> · <span>Power BI</span></p>
+</div>
+
+</body>
+</html>
