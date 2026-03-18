@@ -5,6 +5,7 @@
 ![PowerBI](https://img.shields.io/badge/Power%20BI-Dashboard-yellow?style=flat&logo=powerbi)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen?style=flat)
 
+
 > **End-to-end data analytics project** analyzing **1,21,180 Amazon orders** worth **₹7.8 Crore** using Python and Power BI — built as part of a Data Analytics Portfolio.
 
 ---
@@ -68,6 +69,10 @@ The raw data had **1,28,975 messy records** with missing values, wrong data type
 ---
 
 ## 📊 Dashboard Preview
+![Amazon Sales Dashboard](dashboard/dashboard_preview.png)
+
+> Dark themed interactive Power BI dashboard analyzing ₹7.8 Crore 
+> in Amazon India sales across April–June 2022
 
 The Power BI dashboard includes:
 
