@@ -238,9 +238,9 @@ Copy and paste these directly on your resume:
 
 ## 🔗 Connect With Me
 
-- 💼 LinkedIn: [Your LinkedIn URL here]
-- 📧 Email: [Your Email here]
-- 🐙 GitHub: [Your GitHub URL here]
+- 💼 LinkedIn:https://www.linkedin.com/in/vikasrathod90/
+- 📧 Email:vikasrathod90222@gmail.com
+- 🐙 GitHub:https://github.com/Vicky9022
 
 ---
 
